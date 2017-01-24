@@ -23,6 +23,11 @@ Host <<| tag == 'puppetlabs' |>>
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
 
+node 'drewbilee.puppetlabs.vm' {
+  include ::system_users
+  notify { "Your FQDN is ${::fqdn}! Your IP address is ${::ipaddress}": }
+}
+
 node default {
   # This is where you can declare classes for all nodes.
   # Example:
