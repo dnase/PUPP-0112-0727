@@ -2,4 +2,7 @@
 <h1> My hostname is <%= $fqdn  %> </h1>
 <h2> My IP address is <%= $ipaddress %> </h2>
 <h2> My docroot is set to <%= $docroot %> </h2>
+<% if $servername { -%>
+  <h3> This is a vhost with the name <%= $servername %> </h3>
+<% } -%>
 </html>

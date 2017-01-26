@@ -29,14 +29,12 @@ class nginx {
   package { $package:
     ensure => present,
   }
-  file { 'webroot':
-    ensure => directory,
-    path   => $docroot,
+  nginx::vhost { 'default':
+    docroot    => $docroot,
+    servername => $::fqdn,
   }
-  file { 'index.html':
-    ensure  => file,
-    path    => "${docroot}/index.html",
-    content => epp('nginx/index.html.epp', { docroot => $docroot}),
+  file { "${docroot}/vhosts":
+    ensure => directory,
   }
   file { 'nginx.conf':
     ensure     => file,
@@ -46,18 +44,12 @@ class nginx {
       logdir   => $logdir,
       confdir  => $confdir,
       blockdir => $blockdir,
-      }),
-    require => Package[$package],
-  }
-  file { 'default.conf':
-    ensure  => file,
-    path    => "${blockdir}/default.conf",
-    content => epp('nginx/default.conf.epp', {docroot => $docroot}),
+    }),
     require => Package[$package],
   }
   service { 'nginx':
     ensure    => running,
     enable    => true,
-    subscribe => File['default.conf', 'nginx.conf'],
+    subscribe => File['nginx.conf'],
   }
 }
