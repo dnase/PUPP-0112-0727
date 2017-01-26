@@ -1,2 +1,2 @@
 ---
-nginx::highperf: false
+nginx::group: 'wheel'
