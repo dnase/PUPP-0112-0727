@@ -1,0 +1,5 @@
+<html>
+<h1> My hostname is <%= $fqdn  %> </h1>
+<h2> My IP address is <%= $ipaddress %> </h2>
+<h2> My docroot is set to <%= $docroot %> </h2>
+</html>

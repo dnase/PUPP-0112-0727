@@ -21,8 +21,8 @@ class nginx {
     }
   }
   File {
-    owner => 'root',
-    group => 'root',
+    owner => $owner,
+    group => $group,
     mode  => '0644',
   }
   package { $package:
@@ -33,24 +33,30 @@ class nginx {
     path   => $docroot,
   }
   file { 'index.html':
-    ensure => file,
-    path   => "${docroot}/index.html",
-    source => "puppet:///modules/nginx/index.html",
+    ensure  => file,
+    path    => "${docroot}/index.html",
+    content => epp('nginx/index.html.epp', { docroot => $docroot}),
   }
   file { 'nginx.conf':
-    ensure  => file,
-    path    => "${confdir}/nginx.conf",
-    source  => "puppet:///modules/nginx/${::osfamily}.conf",
+    ensure     => file,
+    path       => "${confdir}/nginx.conf",
+    content    => epp('nginx/nginx.conf.epp', {
+      user     => $owner,
+      logdir   => $logdir,
+      confdir  => $confdir,
+      blockdir => $blockdir,
+      }),
     require => Package[$package],
   }
   file { 'default.conf':
     ensure  => file,
     path    => "${blockdir}/default.conf",
-    source  => "puppet:///modules/nginx/default-${::kernel}.conf",
+    content => epp('nginx/default.conf.epp', {docroot => $docroot}),
     require => Package[$package],
   }
   service { 'nginx':
     ensure    => running,
+    enable    => true,
     subscribe => File['default.conf', 'nginx.conf'],
   }
 }
