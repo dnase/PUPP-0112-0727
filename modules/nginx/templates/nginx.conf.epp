@@ -22,7 +22,7 @@ http {
 
     access_log  <%= $logdir %>/access.log  main;
 
-    sendfile            on;
+    sendfile            <% if $highperf == true { %>on<% } else { %>off<% } %>;
     tcp_nopush          on;
     tcp_nodelay         on;
     keepalive_timeout   65;

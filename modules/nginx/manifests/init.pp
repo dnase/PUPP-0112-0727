@@ -1,4 +1,7 @@
-class nginx {
+class nginx (
+  String $root = 'root',
+  Boolean $highperf = true,
+) {
   case $::osfamily {
     'redhat', 'debian' : {
       $package = 'nginx'
@@ -27,7 +30,7 @@ class nginx {
     mode  => '0644',
   }
   package { $package:
-    ensure => present,
+    ensure  => present,
   }
   nginx::vhost { 'default':
     docroot    => $docroot,
@@ -44,6 +47,7 @@ class nginx {
       logdir   => $logdir,
       confdir  => $confdir,
       blockdir => $blockdir,
+      highperf => $highperf,
     }),
     require => Package[$package],
   }
