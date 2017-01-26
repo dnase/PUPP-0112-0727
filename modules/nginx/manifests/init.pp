@@ -1,29 +1,14 @@
 class nginx (
-  String $root = 'root',
-  Boolean $highperf = true,
-) {
-  case $::osfamily {
-    'redhat', 'debian' : {
-      $package = 'nginx'
-      $owner = 'root'
-      $group = 'root'
-      $docroot = '/var/www'
-      $logdir = '/var/log'
-      $confdir = '/etc/nginx'
-      $blockdir = '/etc/nginx/conf.d'
-    }
-    'windows' : {
-      $package = 'nginx-service'
-      $owner = 'Administrator'
-      $group = 'Administrators'
-      $docroot = 'C:/ProgramData/nginx/html'
-      $confdir = 'C:/ProgramData/nginx/conf'
-      $blockdir = 'C:/ProgramData/nginx/conf.d'
-    }
-    default : {
-      fail("Module ${module_name} is not supported on ${::osfamily}")
-    }
-  }
+  String $package = $nginx::params::package,
+  String $owner = $nginx::params::owner,
+  String $group = $nginx::params::group,
+  String $docroot = $nginx::params::docroot,
+  String $confdir = $nginx::params::confdir,
+  String $blockdir = $nginx::params::blockdir,
+  String $logdir = $nginx::params::logdir,
+  String $user = $nginx::params::user,
+  Boolean $highperf = $nginx::params::highperf,
+) inherits nginx::params {
   File {
     owner => $owner,
     group => $group,

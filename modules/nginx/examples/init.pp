@@ -1,3 +1,3 @@
 class { 'nginx':
-  highperf => false,
+  highperf => true,
 }
