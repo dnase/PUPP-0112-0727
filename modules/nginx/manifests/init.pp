@@ -5,6 +5,7 @@ class nginx {
       $owner = 'root'
       $group = 'root'
       $docroot = '/var/www'
+      $logdir = '/var/log'
       $confdir = '/etc/nginx'
       $blockdir = '/etc/nginx/conf.d'
     }
